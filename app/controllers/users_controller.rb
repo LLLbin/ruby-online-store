@@ -1,17 +1,13 @@
 class UsersController < ApplicationController
+
   def index
   end
 
   def show
-  end
-
-  def new
+    @user = current_user
   end
 
   def edit
-  end
-
-  def create
   end
 
   def update
@@ -19,4 +15,5 @@ class UsersController < ApplicationController
 
   def destroy
   end
+
 end

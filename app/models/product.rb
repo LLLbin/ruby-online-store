@@ -1,4 +1,7 @@
 class Product < ApplicationRecord
+  has_many :cart_items
+  has_many :order_items
+
   validates :name, presence: true, length: { minimum: 2, maximum: 100 }
   validates :description, length: { maximum: 1000 }
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }

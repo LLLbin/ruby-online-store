@@ -1,85 +1,104 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
-
-  <title>RailsBootstrapJquery</title>
-
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
+  <title>Online Store</title>
   <%= csrf_meta_tags %>
-
   <%= csp_meta_tag %>
-
-
-
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-
   <%= javascript_importmap_tags %>
+  <style>
+      body, html {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+      }
 
+      .container-fluid {
+          padding: 0;
+          height: 100%;
+          overflow: hidden; /* 添加 overflow:hidden 防止内容溢出 */
+      }
+
+      .row {
+          margin-right: 0;
+          margin-left: 0;
+      }
+
+      .row > [class^="col-"] {
+          padding: 0; /* 移除列的内边距 */
+      }
+
+      header {
+          background-color: #003366; /* 深蓝色 */
+          color: white;
+          height: 100px; /* 加厚顶部区域 */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 0;
+          border: none;
+      }
+
+      aside {
+          background-color: #0057b7; /* 更深的蓝色 */
+          color: white;
+          height: calc(100vh - 100px); /* 减去加厚后的顶部区域的高度 */
+          display: flex;
+          flex-direction: column; /* 垂直排列子元素 */
+          align-items: center; /* 水平居中 */
+          border: none;
+          padding-top: 50px;
+      }
+
+      main {
+          background-color: #f8f9fa; /* 浅灰色 */
+          height: calc(100vh - 100px); /* 减去加厚后的顶部区域的高度 */
+          border: none;
+          padding: 50px 0 0 80px;
+      }
+  </style>
 </head>
-
-
-
 <body>
-
-<header>
-
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-
-    <div class="container-fluid">
-
-      <a class="navbar-brand" href="#">Top navbar</a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-
-        <span class="navbar-toggler-icon"></span>
-
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-
-          <li class="nav-item">
-
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-
-          </li>
-
-          <li class="nav-item">
-
-            <a class="nav-link" href="#">Link</a>
-
-          </li>
-
-          <li class="nav-item">
-
-            <a class="nav-link disabled">Disabled</a>
-
-          </li>
-
-        </ul>
-
-        <form class="d-flex" role="search">
-
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-
-          <button class="btn btn-outline-success" type="submit">Search</button>
-
-        </form>
-
+<% if user_signed_in? %>
+  <div class="container-fluid">
+    <!-- 顶部区域 -->
+    <div class="row">
+      <div class="col-12">
+        <header>
+          <h1><strong>Online Store</strong></h1>
+        </header>
       </div>
-
     </div>
 
-  </nav>
+    <!-- 左侧和右侧区域 -->
+    <div class="row flex-grow-1">
+      <!-- 左侧区域 -->
+      <!-- 左侧区域 -->
+      <div class="col-md-2"> <!-- 更窄的左侧栏 -->
+        <aside>
+          <%= link_to 'User Profile', user_path(current_user), class: 'btn btn-primary btn-lg', style: 'margin-bottom: 20px; display: block;' %>
+          <%= link_to 'Show Products', products_path, class: 'btn btn-primary btn-lg', style: 'margin-bottom: 20px; display: block;' %>
+          <%= link_to 'Shopping Cart', cart_path, class: 'btn btn-primary btn-lg', style: 'margin-bottom: 20px; display: block;' %>
+          <%= link_to 'History Orders', orders_path, class: 'btn btn-primary btn-lg', style: 'margin-bottom: 20px; display: block;' %>
+          <%= link_to 'Logout', destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-primary btn-lg', style: 'margin-bottom: 20px; display: block;' %>
+        </aside>
+      </div>
 
-</header>
-
-<%= yield %>
-
+      <!-- 右侧区域 -->
+      <div class="col-md-10">
+        <main>
+          <%= yield %>
+        </main>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <% case controller_name %>
+  <% when 'registrations' %>
+    <%= render 'registrations/new' %>
+  <% when 'sessions' %>
+    <%= render 'sessions/new' %>
+  <% end %>
+<% end %>
 </body>
-
 </html>

@@ -1,8 +1,14 @@
 Rails.application.routes.draw do
-  resources :users do
-    resources :carts
-    resources :orders
-  end
+  root 'products#index'
+
+  devise_for :users, controllers: {
+    sessions: 'sessions',
+    registrations: 'registrations'
+  }
+
+  resources :users
+
+  resource :cart
 
   resources :orders do
     resources :order_items
