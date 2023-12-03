@@ -5,11 +5,13 @@ Rails.application.routes.draw do
   }
 
   authenticated :user do
-    root 'users#show', as: :authenticated_root
+    root to: 'users#show', as: :authenticated_root
   end
 
-  unauthenticated do
-    root 'devise/sessions#new'
+  unauthenticated :user do
+    devise_scope :user do
+      root to: 'devise/sessions#new', as: :unauthenticated_root
+    end
   end
 
   resources :users
