@@ -2,6 +2,10 @@
   <h1>Shopping Cart</h1>
   <p style="color: green"><%= notice %></p>
 
+  <% if current_user.role == "user" %>
+    <%= link_to "Place Order", new_order_path, class: 'btn btn-success mb-3' %>
+  <% end %>
+
   <div class="row">
     <div class="col-md-12">
       <div class="card">
@@ -13,7 +17,7 @@
               <th class="text-center align-middle">image</th>
               <th class="text-center align-middle">Description</th>
               <th class="text-center align-middle">Price</th>
-              <th class="text-center align-middle">quantity</th>
+              <th class="text-center align-middle">Quantity</th>
               <th class="text-center align-middle">Actions</th>
             </tr>
             </thead>

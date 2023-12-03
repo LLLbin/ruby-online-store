@@ -1,8 +1,28 @@
+<% if flash[:alert] %>
+  <div class="alert alert-danger" style="text-align: center;">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
 <div class="container mt-5">
+  <h1 style="margin: 50px 100px 0 100px">User Profile</h1>
   <div class="row">
     <div class="col-md-10 offset-md-1">
       <div class="card">
         <div class="card-body">
+          <%= form_with(model: current_user, local: true) do |form| %>
+            <% if current_user.errors.any? %>
+              <div id="error_explanation" class="alert alert-danger">
+                <h2><%= pluralize(current_user.errors.count, "error") %> prohibited this product from being saved:</h2>
+                <ul>
+                  <% current_user.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+          <% end %>
+
           <img src="https://api.multiavatar.com/<%= current_user.email %>.png?apikey=LQqxd9WmsPl4aE" alt="User Avatar" class="img-thumbnail" width="100" height="100">
 
           <h4 style="margin-top: 20px">Email</h4>

@@ -14,4 +14,5 @@ class User < ApplicationRecord
   def create_cart
     Cart.create(user: self)
   end
+
 end

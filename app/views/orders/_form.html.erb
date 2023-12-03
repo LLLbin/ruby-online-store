@@ -1,17 +1,65 @@
-<%= form_with(model: order) do |form| %>
-  <% if order.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <%= form_with(model: @order, url: orders_path, method: :post) do |form| %>
+          <% if @order.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
+              <ul>
+                <% @order.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
 
-      <ul>
-        <% order.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+          <table class="table">
+            <thead>
+            <tr>
+              <th class="text-center align-middle">Name</th>
+              <th class="text-center align-middle">Image</th>
+              <th class="text-center align-middle">Description</th>
+              <th class="text-center align-middle">Price</th>
+              <th class="text-center align-middle">Quantity</th>
+              <th class="text-center align-middle">Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% total_amount = 0 %>
+            <% items.each do |item| %>
+              <% item_amount = item.quantity * item.product.price %>
+              <% total_amount += item_amount %>
+              <tr>
+                <td class="text-center align-middle"><%= item.product.name %></td>
+                <td class="text-center align-middle">
+                  <img src=<%= item.product.image %> alt="Picture" width="80" height="80">
+                </td>
+                <td class="text-center align-middle"><%= item.product.description %></td>
+                <td class="text-center align-middle"><%= number_to_currency(item.product.price) %></td>
+                <td class="text-center align-middle"><%= item.quantity %></td>
+                <td class="text-center align-middle"><%= number_to_currency(item_amount) %></td>
+              </tr>
+            <% end %>
+            <tr>
+              <td colspan="4" class="text-right align-middle"></td>
+              <td class="text-center align-middle"><strong>Total Amount:</strong></td>
+              <td class="text-center align-middle">
+                <%= number_to_currency(total_amount) %>
+                <%= form.hidden_field :amount, value: total_amount %>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <%= form.hidden_field :user_id, value: current_user.id %>
+          <% if total_amount != 0 %>
+            <div style="text-align: right; margin-right: 38px">
+              <%= form.submit "Place Order", class: 'btn btn-success mb-3' %>
+            </div>
+          <% end %>
+          </div>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div>
-    <%= form.submit %>
+        </div>
   </div>
-<% end %>
+</div>
+</div>

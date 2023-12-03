@@ -1,10 +1,36 @@
+<style>
+    .hidden-cell-link {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        opacity: 0;
+    }
+
+    td {
+        position: relative;
+    }
+</style>
+
 <div class="container mt-5">
   <h1>Products</h1>
   <p style="color: green"><%= notice %></p>
 
-  <% if current_user.role == "admin" %>
-    <%= link_to "New product", new_product_path, class: 'btn btn-success mb-3' %>
-  <% end %>
+  <div class="row mb-3">
+    <div class="col d-flex">
+      <%= form_with url: products_path, method: :get, class: "search-form d-flex" do |form| %>
+        <%= form.text_field :search, placeholder: "Search products...", class: "form-control me-2" %>
+        <%= form.submit "Search", class: "btn btn-outline-primary" %>
+      <% end %>
+    </div>
+    <% if current_user.role == "admin" %>
+      <div class="col-auto" style="margin-right: 65px">
+        <%= link_to "New product", new_product_path, class: 'btn btn-success' %>
+      </div>
+    <% end %>
+  </div>
 
   <div class="row">
     <div class="col-md-12">
@@ -23,17 +49,24 @@
             <tbody>
             <% @products.each do |product| %>
               <tr>
-                <td class="text-center align-middle"><%= product.name %></td>
-                <td class="text-center align-middle"><img src=<%= product.image %> alt="Picture" width="80" height="80"></td>
-                <td class="text-center align-middle"><%= product.description %></td>
-                <td class="text-center align-middle"><%= number_to_currency(product.price) %></td>
+                <% [product.name, product.image, product.description, product.price].each do |cell_content| %>
+                  <td class="text-center align-middle">
+                    <%= link_to "", product_path(product), class: "hidden-cell-link" %>
+                    <% if cell_content == product.image && product.image.present? %>
+                      <%= image_tag product.image.url, alt: "Picture", width: "80", height: "80" %>
+                    <% else %>
+                      <%= cell_content %>
+                    <% end %>
+                  </td>
+                <% end %>
+
                 <td class="text-center align-middle">
                   <% if current_user.role == "user" %>
                     <%= link_to "Add to Cart", new_cart_item_path(product_id: product.id), class: 'btn btn-primary' %>
                   <% end %>
                   <% if current_user.role == "admin" %>
                     <%= link_to "Edit", edit_product_path(product), class: 'btn btn-secondary btn-sm' %>
-                    <%= link_to "Delete", product, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+                    <%= link_to "Delete", product, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
                   <% end %>
                 </td>
               </tr>

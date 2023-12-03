@@ -1,14 +1,53 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Orders</h1>
-
-<div id="orders">
-  <% @orders.each do |order| %>
-    <%= render order %>
-    <p>
-      <%= link_to "Show this order", order %>
-    </p>
-  <% end %>
+<div class="container mt-5">
+  <h1>History Orders</h1>
+  <p style="color: green"><%= notice %></p>
+    <div class="row">
+      <div class="col-md-12">
+        <% @orders.order(created_at: :desc).each do |order| %>
+          <div class="card" style="margin: 50px 0 50px 0">
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th class="text-center align-middle">Name</th>
+                  <th class="text-center align-middle">Image</th>
+                  <th class="text-center align-middle">Description</th>
+                  <th class="text-center align-middle">Price</th>
+                  <th class="text-center align-middle">Quantity</th>
+                  <th class="text-center align-middle">Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% total_amount = 0 %>
+                <% order.order_items.each do |item| %>
+                  <% item_amount = item.quantity * item.product.price %>
+                  <% total_amount += item_amount %>
+                  <tr>
+                    <td class="text-center align-middle"><%= item.product.name %></td>
+                    <td class="text-center align-middle">
+                      <img src=<%= item.product.image %> alt="Picture" width="80" height="80">
+                    </td>
+                    <td class="text-center align-middle"><%= item.product.description %></td>
+                    <td class="text-center align-middle"><%= number_to_currency(item.product.price) %></td>
+                    <td class="text-center align-middle"><%= item.quantity %></td>
+                    <td class="text-center align-middle"><%= number_to_currency(item_amount) %></td>
+                  </tr>
+                <% end %>
+                <tr>
+                  <td colspan="4" class="text-right align-middle"></td>
+                  <td class="text-center align-middle"><strong>Total Amount:</strong></td>
+                  <td class="text-center align-middle"><%= number_to_currency(total_amount) %></td>
+                </tr>
+                </tbody>
+              </table>
+              <div style="text-align: right; margin-right: 38px">
+                <% if current_user.role == "user" && controller_name == 'orders' && action_name == 'new' %>
+                  <%= link_to "Place Order", new_order_path, class: 'btn btn-success mb-3' %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
 </div>
-
-<%= link_to "New order", new_order_path %>

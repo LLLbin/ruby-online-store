@@ -1,9 +1,6 @@
-<h1>New order</h1>
+<div class="container mt-5">
+  <h1>New Order</h1>
+  <p style="color: green"><%= notice %></p>
 
-<%= render "form", order: @order %>
-
-<br>
-
-<div>
-  <%= link_to "Back to orders", orders_path %>
+  <%= render "form", items: @cart_items %>
 </div>

@@ -32,7 +32,6 @@
               <input type="text" value="<%= cart_item.product.price %>" class="form-control" disabled>
             </div>
 
-
             <%= form.hidden_field :product_id, value: cart_item.product.id %>
             <%= form.hidden_field :cart_id, value: current_user.cart.id %>
             <div class="form-group mb-3">

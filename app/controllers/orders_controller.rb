@@ -13,6 +13,7 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     @order = Order.new
+    @cart_items = current_user.cart.cart_items
   end
 
   # GET /orders/1/edit
@@ -21,11 +22,15 @@ class OrdersController < ApplicationController
 
   # POST /orders or /orders.json
   def create
-    @order = Order.new(order_params)
+    @order = Order.new(order_params.merge(user: current_user))
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to order_url(@order), notice: "Order was successfully created." }
+        current_user.cart.cart_items.each do |cart_item|
+          @order.order_items.create(product_id: cart_item.product_id, quantity: cart_item.quantity)
+          cart_item.destroy
+        end
+        format.html { redirect_to orders_path, notice: "Order was successfully created." }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -65,6 +70,6 @@ class OrdersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def order_params
-      params.fetch(:order, {})
+      params.require(:order).permit(:user_id, :amount)
     end
 end

@@ -7,4 +7,10 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:username, :profile])
     devise_parameter_sanitizer.permit(:sign_up, keys: [:username, :profile])
   end
+
+  def admin_required
+    if current_user.role != "admin"
+      redirect_to"/", alert: "You are not admin!"
+    end
+  end
 end
