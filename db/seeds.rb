@@ -10,6 +10,8 @@
 
 User.create!(
   username: 'admin',
+  password: '123456789',
   role: 'admin',
-  email: 'admin@example.com'
+  email: 'admin@example.com',
+  profile: 'I am admin.'
 )
