@@ -1,24 +1,12 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# This is project for COEN 278.
 
-Things you may want to cover:
+# Requirement:
+- Ruby 3.0+
+- Rails 7.0+
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# How to run
+1. rails db:migrate
+2. rails db:seed
+3. rails s
