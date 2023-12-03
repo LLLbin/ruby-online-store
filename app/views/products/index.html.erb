@@ -1,13 +1,49 @@
-<h1>Products#index</h1>
-<p>Find me in app/views/products/index.html.erb</p>
+<div class="container mt-5">
+  <h1>Products</h1>
+  <p style="color: green"><%= notice %></p>
 
-
-<h1>products</h1>
-
-<ul>
-  <% @product.each do |product| %>
-    <li>
-      <%= product.name %>
-    </li>
+  <% if current_user.role == "admin" %>
+    <%= link_to "New product", new_product_path, class: 'btn btn-success mb-3' %>
   <% end %>
-</ul>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <table class="table">
+            <thead>
+            <tr>
+              <th class="text-center align-middle">Name</th>
+              <th class="text-center align-middle">image</th>
+              <th class="text-center align-middle">Description</th>
+              <th class="text-center align-middle">Price</th>
+              <th class="text-center align-middle">Stock</th>
+              <th class="text-center align-middle">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @products.each do |product| %>
+              <tr>
+                <td class="text-center align-middle"><%= product.name %></td>
+                <td class="text-center align-middle"><img src=<%= product.image %> alt="Picture" width="80" height="80"></td>
+                <td class="text-center align-middle"><%= product.description %></td>
+                <td class="text-center align-middle"><%= number_to_currency(product.price) %></td>
+                <td class="text-center align-middle"><%= product.stock %></td>
+                <td class="text-center align-middle">
+                  <% if current_user.role == "user" %>
+                    <%= link_to "Add to cart", product, class: 'btn btn-primary btn-sm' %>
+                  <% end %>
+                  <% if current_user.role == "admin" %>
+                    <%= link_to "Edit", edit_product_path(product), class: 'btn btn-secondary btn-sm' %>
+                    <%= link_to "Delete", product, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

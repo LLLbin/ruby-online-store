@@ -1,9 +1,10 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :configure_permitted_parameters, if: :devise_controller?
 
-  private
+  protected
 
-  def authenticate_user!
-    redirect_to new_user_session_path unless user_signed_in?
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:account_update, keys: [:username, :profile])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:username, :profile])
   end
 end
