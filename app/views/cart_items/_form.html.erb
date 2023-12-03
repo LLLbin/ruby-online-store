@@ -1,0 +1,61 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <div class="card">
+        <div class="card-body">
+          <h2><%= operation %> Cart Item</h2>
+
+          <%= form_with(model: cart_item, local: true) do |form| %>
+            <% if cart_item.errors.any? %>
+              <div id="error_explanation" class="alert alert-danger">
+                <h2><%= pluralize(cart_item.errors.count, "error") %> prohibited this product from being saved:</h2>
+                <ul>
+                  <% cart_item.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="form-group mb-3">
+              <label>Name</label>
+              <input type="text" value="<%= cart_item.product.name %>" class="form-control" disabled>
+            </div>
+
+            <div class="form-group mb-3">
+              <label>Description</label>
+              <textarea rows="2" class="form-control" disabled><%= cart_item.product.description %></textarea>
+            </div>
+
+            <div class="form-group mb-3">
+              <label>Price</label>
+              <input type="text" value="<%= cart_item.product.price %>" class="form-control" disabled>
+            </div>
+
+
+            <%= form.hidden_field :product_id, value: cart_item.product.id %>
+            <%= form.hidden_field :cart_id, value: current_user.cart.id %>
+            <div class="form-group mb-3">
+              <%= form.label :quantity %>
+              <% if operation == "Add" %>
+                <%= form.number_field :quantity, value: 1, class: 'form-control', min: 1 %>
+              <% else %>
+                <%= form.number_field :quantity, value: cart_item.quantity, class: 'form-control', min: 1 %>
+            <% end %>
+            </div>
+
+            <div class="actions mt-3">
+              <%= form.submit 'Save Cart Item', class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+
+          <hr>
+
+          <div class="mt-3">
+            <%= link_to "Back to Products", products_path, class: 'btn btn-secondary' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,12 +7,9 @@ Rails.application.routes.draw do
   }
 
   resources :users
-
-  resource :cart
-
-  resources :orders do
-    resources :order_items
-  end
-
+  resource  :cart
+  resources :cart_items
+  resources :orders
+  resources :order_items
   resources :products
 end

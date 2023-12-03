@@ -1,2 +1,9 @@
-<h1>Carts#new</h1>
-<p>Find me in app/views/carts/new.html.erb</p>
+<h1>New cart</h1>
+
+<%= render "form", cart: @cart %>
+
+<br>
+
+<div>
+  <%= link_to "Back to carts", carts_path %>
+</div>

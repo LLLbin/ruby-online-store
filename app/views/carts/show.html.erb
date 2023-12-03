@@ -1,2 +1,39 @@
-<h1>Carts#show</h1>
-<p>Find me in app/views/carts/show.html.erb</p>
+<div class="container mt-5">
+  <h1>Shopping Cart</h1>
+  <p style="color: green"><%= notice %></p>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <table class="table">
+            <thead>
+            <tr>
+              <th class="text-center align-middle">Name</th>
+              <th class="text-center align-middle">image</th>
+              <th class="text-center align-middle">Description</th>
+              <th class="text-center align-middle">Price</th>
+              <th class="text-center align-middle">quantity</th>
+              <th class="text-center align-middle">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @cart.cart_items.each do |cart_item| %>
+              <tr>
+                <td class="text-center align-middle"><%= cart_item.product.name %></td>
+                <td class="text-center align-middle"><img src=<%= cart_item.product.image %> alt="Picture" width="80" height="80"></td>
+                <td class="text-center align-middle"><%= cart_item.product.description %></td>
+                <td class="text-center align-middle"><%= number_to_currency(cart_item.product.price) %></td>
+                <td class="text-center align-middle"><%= cart_item.quantity %></td>
+                <td class="text-center align-middle">
+                  <%= link_to "Edit", edit_cart_item_path(cart_item), class: 'btn btn-primary btn-sm' %>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
